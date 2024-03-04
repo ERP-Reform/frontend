@@ -54,6 +54,18 @@ const MainRoutes = {
     {
       path: 'icons/ant',
       element: <AntIcons />
+    },
+    {
+      path: 'invoices',
+      element: <DashboardDefault />
+    },
+    {
+      path: 'inventories',
+      element: <DashboardDefault />
+    },
+    {
+      path: 'employees',
+      element: <DashboardDefault />
     }
   ]
 };
