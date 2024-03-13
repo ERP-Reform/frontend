@@ -25,7 +25,7 @@ export default function DataT(props) {
   return (
     <Box sx={{ height: 800, width: '100%' }}>
       <DataGrid
-        rows={[]}
+        rows={data}
         columns={columns}
         localeText={chineseLocaleText}
         initialState={{

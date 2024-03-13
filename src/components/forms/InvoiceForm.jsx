@@ -73,7 +73,7 @@ const InvoiceForm = (props) => {
             查询
           </Button>
 
-          <Button size="small" variant="contained" color="error" onClick={handleDeleteInvoice}>
+          <Button size="small" variant="contained" color="error" onClick={() => handleDeleteInvoice(invoice?.SerialNo)}>
             删除记录
           </Button>
 
