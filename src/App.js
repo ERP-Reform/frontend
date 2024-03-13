@@ -5,7 +5,8 @@ import ScrollTop from 'components/ScrollTop';
 import Routes from 'routes';
 import ThemeCustomization from 'themes';
 // ==============================|| APP - THEME, ROUTER, LOCAL  ||============================== //
-
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 const theme = createTheme(
   {
     palette: {
@@ -15,14 +16,19 @@ const theme = createTheme(
   zhCN
 );
 
+const queryClient = new QueryClient();
+
 const App = () => (
-  <ThemeCustomization>
-    <ThemeProvider theme={theme}>
-      <ScrollTop>
-        <Routes />
-      </ScrollTop>
-    </ThemeProvider>
-  </ThemeCustomization>
+  <QueryClientProvider client={queryClient}>
+    <ThemeCustomization>
+      <ThemeProvider theme={theme}>
+        <ScrollTop>
+          <Routes />
+        </ScrollTop>
+      </ThemeProvider>
+    </ThemeCustomization>
+    <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>
 );
 
 export default App;
