@@ -5,9 +5,13 @@ import { columns } from './config';
 
 const chineseLocaleText = {
   // Localize column menu labels
-  columnHeaderFiltersLabel: '筛选器',
-  columnHeaderSortAscending: '升序排序',
-  columnHeaderSortDescending: '降序排序'
+  // https://github.com/mui/mui-x/blob/v6.19.4/packages/grid/x-data-grid/src/constants/localeTextConstants.ts
+  columnMenuSortAsc: '升序排序',
+  columnMenuSortDesc: '降序排序',
+  columnMenuFilter: '筛选器',
+  columnMenuHideColumn: '隐藏',
+  columnMenuShowColumns: '显示',
+  columnMenuManageColumns: '列选项'
 };
 
 export default function DataT(props) {
