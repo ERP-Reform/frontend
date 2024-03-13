@@ -1,7 +1,26 @@
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+
+import React, { useState } from 'react';
+import axios from 'axios';
+
+
 const InvoiceForm = () => {
+
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+
+  const handleInvoiceSearch = async () => {
+    try {
+      // Replace `your_backend_endpoint` with your actual search endpoint
+      const response = await axios.get(`http://localhost:8000/search/?q=${query}`);
+      setResults(response.data);
+    } catch (error) {
+      console.error('Search error:', error);
+    }
+  };  
+
   return (
     <>
       <Box
@@ -14,7 +33,13 @@ const InvoiceForm = () => {
         autoComplete="off"
       >
         <div>
-          <TextField required id="outlined-required" label="货号" InputLabelProps={{ shrink: true }} />
+          <TextField 
+            required id="outlined-required" 
+            label="货号"
+            InputLabelProps={{ shrink: true }}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)} 
+          />
           <TextField id="outlined-disabled" label="品名(SELECT)" InputLabelProps={{ shrink: true }} />
           <TextField id="outlined-password-input" label="供应商(SELECT)" InputLabelProps={{ shrink: true }} />
           <TextField id="outlined-password-input" label="采购(SELECT)" InputLabelProps={{ shrink: true }} />
@@ -45,13 +70,18 @@ const InvoiceForm = () => {
           <TextField id="outlined-password-input" label="代销/自营" InputLabelProps={{ shrink: true }} />
         </div>
         <Box sx={{ display: 'flex', alignContent: 'center', gap: 4, m: 1 }}>
+          <Button size="small" variant="contained" onClick={handleInvoiceSearch}>
+            查询
+          </Button>
+          
+          <Button size="small" variant="contained" color="error">
+            删除记录
+          </Button>
+
           <Button size="small" variant="contained">
             添加
           </Button>
 
-          <Button size="small" variant="contained" color="error">
-            删除记录
-          </Button>
         </Box>
       </Box>
       <hr />
