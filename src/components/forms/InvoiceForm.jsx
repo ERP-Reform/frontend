@@ -52,13 +52,13 @@ const InvoiceForm = (props) => {
         </div>
 
         <div>
-          <FormTextField label="件数" name="Pack" value={invoice?.Pack} onChange={handleChange} />
-          <FormTextField label="箱价" name="PricePerBox" value={invoice?.PricePerBox} onChange={handleChange} />
+          <FormTextField label="数量" name="Qty" value={invoice?.Qty} onChange={handleChange} />
+          <FormTextField label="箱价" name="BoxPrice" value={invoice?.BoxPrice} onChange={handleChange} />
         </div>
         <div>
           <FormTextField label="重量" name="Wegiht" value={invoice?.Wegiht} onChange={handleChange} />
-          <FormTextField label="斤价" name="PricePerKilo" value={invoice?.PricePerKilo} onChange={handleChange} />
-          <FormTextField label="总金额" name="Subtotal" value={invoice?.Subtotal} onChange={handleChange} />
+          <FormTextField label="斤价" name="WeightPrice" value={invoice?.WeightPrice} onChange={handleChange} />
+          <FormTextField label="总金额" name="TotalPrice" value={invoice?.TotalPrice} onChange={handleChange} />
         </div>
 
         <div>
