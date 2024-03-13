@@ -1,25 +1,27 @@
+/* eslint-disable react/prop-types */
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 
-import React, { useState } from 'react';
-import axios from 'axios';
+import { useCallback, useEffect } from 'react';
+import FormTextField from './FormTextField';
 
+const InvoiceForm = (props) => {
+  // eslint-disable-next-line react/prop-types
+  const { handleInvoiceSearch, setQuery, invoice, setInvoice, handleDeleteInvoice, handleAddInvoice } = props;
 
-const InvoiceForm = () => {
+  const handleChange = useCallback(
+    (event) => {
+      setInvoice((prevState) => ({
+        ...prevState,
+        [event.target.name]: event.target.value
+      }));
+    },
+    [setInvoice]
+  );
 
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
-
-  const handleInvoiceSearch = async () => {
-    try {
-      // Replace `your_backend_endpoint` with your actual search endpoint
-      const response = await axios.get(`http://localhost:8000/search/?q=${query}`);
-      setResults(response.data);
-    } catch (error) {
-      console.error('Search error:', error);
-    }
-  };  
+  useEffect(() => {
+    setQuery(invoice?.SerialNo);
+  }, [invoice?.SerialNo, setQuery]);
 
   return (
     <>
@@ -33,55 +35,51 @@ const InvoiceForm = () => {
         autoComplete="off"
       >
         <div>
-          <TextField 
-            required id="outlined-required" 
-            label="货号"
-            InputLabelProps={{ shrink: true }}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)} 
-          />
-          <TextField id="outlined-disabled" label="品名(SELECT)" InputLabelProps={{ shrink: true }} />
-          <TextField id="outlined-password-input" label="供应商(SELECT)" InputLabelProps={{ shrink: true }} />
-          <TextField id="outlined-password-input" label="采购(SELECT)" InputLabelProps={{ shrink: true }} />
+          <FormTextField required={true} label="货号" name="SerialNo" value={invoice?.SerialNo} onChange={handleChange} />
+          <FormTextField required={true} label="品名" name="Category" value={invoice?.Category} onChange={handleChange} />
+          <FormTextField required={true} label="供应商" name="Vendor" value={invoice?.Vendor} onChange={handleChange} />
+          <FormTextField required={true} label="采购" name="Buyer" value={invoice?.Buyer} onChange={handleChange} />
         </div>
 
         <div>
-          <TextField required id="outlined-required" label="规格" InputLabelProps={{ shrink: true }} />
-          <TextField id="outlined-disabled" label="批号柜号" InputLabelProps={{ shrink: true }} />
-          <TextField id="outlined-password-input" label="批次" InputLabelProps={{ shrink: true }} />
-          <TextField id="outlined-password-input" label="品牌" InputLabelProps={{ shrink: true }} />
-          <TextField id="outlined-password-input" label="品牌" InputLabelProps={{ shrink: true }} />
-          <TextField id="outlined-password-input" label="备注" InputLabelProps={{ shrink: true }} />
+          <FormTextField label="批号柜号" name="MakeUpId" value={invoice?.MakeUpId} onChange={handleChange} />
+          <FormTextField label="规格" name="Specification" value={invoice?.Specification} onChange={handleChange} />
+          <FormTextField label="批次" name="Batch" value={invoice?.Batch} onChange={handleChange} />
+          <FormTextField label="品牌" name="Brand" value={invoice?.Brand} onChange={handleChange} />
+
+          <FormTextField label="备注1" name="Note_One" value={invoice?.Note_One} onChange={handleChange} />
+          <FormTextField label="备注2" name="Note_Two" value={invoice?.Note_Two} onChange={handleChange} />
         </div>
 
         <div>
-          <TextField required id="outlined-required" label="件数" InputLabelProps={{ shrink: true }} />
-          <TextField id="outlined-disabled" label="重量" InputLabelProps={{ shrink: true }} />
-          <TextField id="outlined-password-input" label="箱价" InputLabelProps={{ shrink: true }} />
-          <TextField id="outlined-password-input" label="斤价" InputLabelProps={{ shrink: true }} />
-          <TextField id="outlined-password-input" label="总金额" InputLabelProps={{ shrink: true }} />
+          <FormTextField label="件数" name="Pack" value={invoice?.Pack} onChange={handleChange} />
+          <FormTextField label="箱价" name="PricePerBox" value={invoice?.PricePerBox} onChange={handleChange} />
+        </div>
+        <div>
+          <FormTextField label="重量" name="Wegiht" value={invoice?.Wegiht} onChange={handleChange} />
+          <FormTextField label="斤价" name="PricePerKilo" value={invoice?.PricePerKilo} onChange={handleChange} />
+          <FormTextField label="总金额" name="Subtotal" value={invoice?.Subtotal} onChange={handleChange} />
         </div>
 
         <div>
-          <TextField required id="outlined-required" label="可溯源编号" InputLabelProps={{ shrink: true }} />
-          <TextField id="outlined-disabled" label="包装" InputLabelProps={{ shrink: true }} />
-          <TextField id="outlined-password-input" label="欠款(checkbox)" InputLabelProps={{ shrink: true }} />
-          <TextField id="outlined-password-input" label="按箱/按斤" InputLabelProps={{ shrink: true }} />
-          <TextField id="outlined-password-input" label="代销/自营" InputLabelProps={{ shrink: true }} />
+          <FormTextField label="可溯源编号" name="Reference" value={invoice?.Reference} onChange={handleChange} />
+          <FormTextField label="包装" name="Package" value={invoice?.Package} onChange={handleChange} />
+          <FormTextField label="欠款(checkbox)" name="Arrears" value={invoice?.Arrears} onChange={handleChange} />
+          <FormTextField label="按箱/按斤" name="WeightType" value={invoice?.WeightType} onChange={handleChange} />
+          <FormTextField label="代销/自营" name="OperationType" value={invoice?.OperationType} onChange={handleChange} />
         </div>
         <Box sx={{ display: 'flex', alignContent: 'center', gap: 4, m: 1 }}>
           <Button size="small" variant="contained" onClick={handleInvoiceSearch}>
             查询
           </Button>
-          
-          <Button size="small" variant="contained" color="error">
+
+          <Button size="small" variant="contained" color="error" onClick={handleDeleteInvoice}>
             删除记录
           </Button>
 
-          <Button size="small" variant="contained">
+          <Button size="small" variant="contained" onClick={handleAddInvoice}>
             添加
           </Button>
-
         </Box>
       </Box>
       <hr />
