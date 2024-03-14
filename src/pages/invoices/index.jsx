@@ -30,19 +30,20 @@ const Page = () => {
   // const createInvoice = useCreateInvoice(invoice);
   const queryClient = useQueryClient();
 
+  const parseData = useCallback((data) => {
+    return data?.map((item) => {
+      return {
+        ...item?.fields,
+        id: item.pk,
+        SerialNo: item.pk
+      };
+    });
+  }, []);
   useEffect(() => {
     if (!getInvoices.isLoading && getInvoices.isSuccess) {
-      let data_ = getInvoices.data?.data.map((item) => {
-        return {
-          ...item?.fields,
-          id: item.pk,
-          SerialNo: item.pk
-        };
-      });
-
-      setData(data_);
+      setData(parseData(getInvoices?.data?.data));
     }
-  }, [getInvoices.data, getInvoices.isLoading, getInvoices.isSuccess]);
+  }, [getInvoices.data, getInvoices.isLoading, getInvoices.isSuccess, parseData]);
 
   const resetInvoice = useCallback(() => {
     setInvoice(initialInvoice);
@@ -51,9 +52,8 @@ const Page = () => {
   const handleInvoiceSearch = async () => {
     try {
       // Replace `your_backend_endpoint` with your actual search endpoint
-      const response = await axios.get(`http://localhost:8000/search/?q=${query}`);
-      setData(response.data);
-      console.log(response.data);
+      const response = await axios.get(`http://localhost:8000/invoice/search/?q=${query}`);
+      setData(parseData(response.data));
     } catch (error) {
       console.error('Search error:', error);
     }
