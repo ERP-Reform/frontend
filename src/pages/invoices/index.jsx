@@ -10,6 +10,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 // ==============================|| SAMPLE PAGE ||============================== //
 import { columns as config } from 'components/tables/config';
 import { useGetInvoices } from 'services/invoiceServices';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Page = () => {
   const [data, setData] = useState([]);
@@ -27,10 +28,19 @@ const Page = () => {
 
   const getInvoices = useGetInvoices(true);
   // const createInvoice = useCreateInvoice(invoice);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!getInvoices.isLoading && getInvoices.isSuccess) {
-      setData(getInvoices.data?.data?.data);
+      let data_ = getInvoices.data?.data.map((item) => {
+        return {
+          ...item?.fields,
+          id: item.pk,
+          SerialNo: item.pk
+        };
+      });
+
+      setData(data_);
     }
   }, [getInvoices.data, getInvoices.isLoading, getInvoices.isSuccess]);
 
@@ -63,13 +73,13 @@ const Page = () => {
   const handleAddInvoice = useCallback(() => {
     // enable after the backend api support
     // createInvoice.mutate(invoice);
-    const invoiceData = {
-      ...invoice,
-      id: invoice.SerialNo
-    };
-    setData((prevState) => [...prevState, invoiceData]);
-    resetInvoice();
-  }, [invoice, resetInvoice]);
+    axios.post(`http://localhost:8000/invoice/insert/`, invoice).then(() => {
+      queryClient.invalidateQueries({
+        queryKey: ['invoices']
+      });
+      resetInvoice();
+    });
+  }, [invoice, queryClient, resetInvoice]);
 
   return (
     <MainCard title="货单">

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
-const BASE_URL = `http://localhost:8000`;
+const BASE_URL = `http://localhost:8000/invoice`;
 
 const useGetInvoices = (enabled) => {
   const { data, isSuccess, isError, isLoading } = useQuery({
@@ -17,7 +17,7 @@ const useCreateInvoice = (invoice) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => axios.post(`${BASE_URL}`, invoice),
+    mutationFn: () => axios.post(`${BASE_URL}/insert/`, invoice),
     onSuccess: (createdInvoice) => {
       // eslint-disable-next-line no-unsafe-optional-chaining
       const { data } = createdInvoice?.data;
@@ -50,4 +50,3 @@ const useDeleteInvoice = (id) => {
 
 export { useCreateInvoice, useDeleteInvoice, useGetInvoices };
 // eslint-disable-next-line prettier/prettier
-
