@@ -12,8 +12,8 @@ import { Provider as ReduxProvider } from 'react-redux';
 import 'assets/third-party/apex-chart.css';
 
 // project import
-import App from './App';
 import { store } from 'store';
+import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 // ==============================|| MAIN - REACT DOM RENDER  ||============================== //
@@ -23,7 +23,7 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 root.render(
   <StrictMode>
     <ReduxProvider store={store}>
-      <BrowserRouter basename="/free">
+      <BrowserRouter basename="/">
         <App />
       </BrowserRouter>
     </ReduxProvider>
