@@ -61,13 +61,16 @@ const Page = () => {
 
   const handleDeleteInvoice = useCallback(
     (SerialNo) => {
-      console.log(`delete by SerialNo: ${SerialNo}`);
-      const data_ = data.filter((invoice) => invoice?.SerialNo !== SerialNo);
-
-      setData(data_);
+      axios.delete(`http://localhost:8000/invoice/delete/${SerialNo}`).then(() => {
+        const data_ = data.filter((invoice) => invoice?.SerialNo !== SerialNo);
+        setData(data_);
+        queryClient.invalidateQueries({
+          queryKey: ['invoices']
+        });
+      });
       resetInvoice();
     },
-    [data, resetInvoice]
+    [data, queryClient, resetInvoice]
   );
 
   const handleAddInvoice = useCallback(() => {
