@@ -1,9 +1,29 @@
 /* eslint-disable react/prop-types */
-import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 
 import { useCallback, useEffect } from 'react';
 import FormTextField from './FormTextField';
+
+import '../smallcomp/button_style.css';
+import React from 'react';
+
+const CustomButton = ({ text, onClick,  backgroundColor, hoverColor }) => {
+
+  const buttonStyle = {
+    '--button-bg-color': backgroundColor,
+    '--button-hover-color': hoverColor,
+  };
+
+  return (
+    <button 
+      className={`custom-button`} 
+      style={buttonStyle}
+      onClick={onClick}>
+      {text}
+    </button>
+  );
+};
+
 
 const InvoiceForm = (props) => {
   // eslint-disable-next-line react/prop-types
@@ -44,25 +64,24 @@ const InvoiceForm = (props) => {
 
         <div>
           <FormTextField label="批号柜号" name="MakeUpId" value={invoice?.MakeUpId} onChange={handleChange} />
-          {/* <FormTextField label="规格" name="Specification" value={invoice?.Specification} onChange={handleChange} /> */}
-          {/* <FormTextField label="批次" name="Batch" value={invoice?.Batch} onChange={handleChange} /> */}
-          {/* <FormTextField label="品牌" name="Brand" value={invoice?.Brand} onChange={handleChange} /> */}
-
-          <FormTextField label="备注1" name="Note_One" value={invoice?.Note_One} onChange={handleChange} />
-          <FormTextField label="备注2" name="Note_Two" value={invoice?.Note_Two} onChange={handleChange} />
+          {<FormTextField label="规格" name="Specification" value={invoice?.Specification} onChange={handleChange} />}
+          {<FormTextField label="批次" name="Batch" value={invoice?.Batch} onChange={handleChange} />}
+          {<FormTextField label="品牌" name="Brand" value={invoice?.Brand} onChange={handleChange} />}
         </div>
 
         <div>
           <FormTextField label="数量" name="Qty" value={invoice?.Qty} onChange={handleChange} />
           <FormTextField label="箱价" name="BoxPrice" value={invoice?.BoxPrice} onChange={handleChange} />
+          <FormTextField label="备注1" name="Note_One" value={invoice?.Note_One} onChange={handleChange} />
+          <FormTextField label="备注2" name="Note_Two" value={invoice?.Note_Two} onChange={handleChange} />
         </div>
         <div>
           <FormTextField label="重量" name="Weight" value={invoice?.Weight} onChange={handleChange} />
           <FormTextField label="斤价" name="WeightPrice" value={invoice?.WeightPrice} onChange={handleChange} />
-          <FormTextField label="总金额" name="TotalPrice" value={invoice?.TotalPrice} onChange={handleChange} />
         </div>
 
         <div>
+          <FormTextField label="总金额" name="TotalPrice" value={invoice?.TotalPrice} onChange={handleChange} />
           <FormTextField label="可溯源编号" name="Reference" value={invoice?.Reference} onChange={handleChange} />
           {/* <FormTextField label="包装" name="Package" value={invoice?.Package} onChange={handleChange} />
           <FormTextField label="欠款(checkbox)" name="Arrears" value={invoice?.Arrears} onChange={handleChange} />
@@ -70,17 +89,27 @@ const InvoiceForm = (props) => {
           <FormTextField label="代销/自营" name="OperationType" value={invoice?.OperationType} onChange={handleChange} /> */}
         </div>
         <Box sx={{ display: 'flex', alignContent: 'center', gap: 4, m: 1 }}>
-          <Button size="small" variant="contained" onClick={handleInvoiceSearch}>
-            查询
-          </Button>
+          <CustomButton
+           text="查询" 
+           onClick={handleInvoiceSearch}
+           backgroundColor='#007bff'
+           hoverColor="#0056b3"  
+          />
 
-          <Button size="small" variant="contained" color="error" onClick={() => handleDeleteInvoice(invoice?.SerialNo)}>
-            删除记录
-          </Button>
+          <CustomButton
+           text="添加"
+           onClick={handleAddInvoice}
+           backgroundColor='#007bff'
+           hoverColor="#0056b3"  
+          />
 
-          <Button size="small" variant="contained" onClick={handleAddInvoice}>
-            添加
-          </Button>
+          <CustomButton 
+           text="删除"
+           onClick={() => handleDeleteInvoice(invoice?.SerialNo)}
+           backgroundColor='#dc3540'
+           hoverColor="#c82333" 
+          /> 
+
         </Box>
       </Box>
       <hr />
