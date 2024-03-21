@@ -3,27 +3,8 @@ import Box from '@mui/material/Box';
 
 import { useCallback, useEffect } from 'react';
 import FormTextField from './FormTextField';
-
-import '../smallcomp/button_style.css';
+import CustomButton from 'components/smallcomp/CustomButton';
 import React from 'react';
-
-const CustomButton = ({ text, onClick,  backgroundColor, hoverColor }) => {
-
-  const buttonStyle = {
-    '--button-bg-color': backgroundColor,
-    '--button-hover-color': hoverColor,
-  };
-
-  return (
-    <button 
-      className={`custom-button`} 
-      style={buttonStyle}
-      onClick={onClick}>
-      {text}
-    </button>
-  );
-};
-
 
 const InvoiceForm = (props) => {
   // eslint-disable-next-line react/prop-types
@@ -89,27 +70,11 @@ const InvoiceForm = (props) => {
           <FormTextField label="代销/自营" name="OperationType" value={invoice?.OperationType} onChange={handleChange} /> */}
         </div>
         <Box sx={{ display: 'flex', alignContent: 'center', gap: 4, m: 1 }}>
-          <CustomButton
-           text="查询" 
-           onClick={handleInvoiceSearch}
-           backgroundColor='#007bff'
-           hoverColor="#0056b3"  
-          />
+          <CustomButton text="查询" onClick={handleInvoiceSearch} backgroundColor="#007bff" hoverColor="#0056b3" />
 
-          <CustomButton
-           text="添加"
-           onClick={handleAddInvoice}
-           backgroundColor='#007bff'
-           hoverColor="#0056b3"  
-          />
+          <CustomButton text="添加" onClick={handleAddInvoice} backgroundColor="#007bff" hoverColor="#0056b3" />
 
-          <CustomButton 
-           text="删除"
-           onClick={() => handleDeleteInvoice(invoice?.SerialNo)}
-           backgroundColor='#dc3540'
-           hoverColor="#c82333" 
-          /> 
-
+          <CustomButton text="删除" onClick={() => handleDeleteInvoice(invoice?.SerialNo)} backgroundColor="#dc3540" hoverColor="#c82333" />
         </Box>
       </Box>
       <hr />
