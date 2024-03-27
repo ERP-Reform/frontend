@@ -50,3 +50,20 @@ export const useUpdateVendor = (vendor) => {
     }
   });
 };
+
+export const useBatchDeleteVendors = (vendorIds) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => axios.put(`${BASE_URL}/update/`, vendorIds),
+    onSuccess: () => {
+      // eslint-disable-next-line no-unsafe-optional-chaining
+      queryClient.invalidateQueries({
+        queryKey: ['vendors']
+      });
+    },
+    onError: (err) => {
+      console.error(err);
+    }
+  });
+};

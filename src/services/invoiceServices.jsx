@@ -48,5 +48,21 @@ const useDeleteInvoice = (id) => {
   });
 };
 
-export { useCreateInvoice, useDeleteInvoice, useGetInvoices };
+const useBatchDeleteInvoices = (ids) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => axios.delete(`${BASE_URL}/batch`, ids),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['invoices']
+      });
+    },
+    onError: (err) => {
+      console.error(err);
+    }
+  });
+};
+
+export { useBatchDeleteInvoices, useCreateInvoice, useDeleteInvoice, useGetInvoices };
 // eslint-disable-next-line prettier/prettier

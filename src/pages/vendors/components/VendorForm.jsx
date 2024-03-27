@@ -6,7 +6,7 @@ import CustomButton from 'components/smallcomp/CustomButton';
 import { useCallback } from 'react';
 const VendorForm = (props) => {
   // eslint-disable-next-line react/prop-types
-  const { vendors, setVendors, handleAddvendors } = props;
+  const { vendors, setVendors, handleSubmit } = props;
 
   const handleChange = useCallback(
     (event) => {
@@ -43,7 +43,7 @@ const VendorForm = (props) => {
         <Box sx={{ display: 'flex', alignContent: 'center', gap: 4, m: 1 }}>
           {/* <CustomButton text="查询" onClick={handlevendorsSearch} backgroundColor="#007bff" hoverColor="#0056b3" /> */}
 
-          <CustomButton text="添加" onClick={handleAddvendors} backgroundColor="#007bff" hoverColor="#0056b3" />
+          <CustomButton text="添加" onClick={handleSubmit} backgroundColor="#007bff" hoverColor="#0056b3" />
         </Box>
       </Box>
       <hr />

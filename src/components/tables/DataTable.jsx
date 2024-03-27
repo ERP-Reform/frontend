@@ -15,7 +15,7 @@ const chineseLocaleText = {
 
 export default function DataTable(props) {
   // eslint-disable-next-line react/prop-types
-  const { data, columnConfigs } = props;
+  const { data, columnConfigs, handleOnRowSelectionChange } = props;
 
   useEffect(() => {
     console.log(data);
@@ -26,6 +26,7 @@ export default function DataTable(props) {
       <DataGrid
         rows={data}
         columns={columnConfigs}
+        handleOnRowSelectionChange={handleOnRowSelectionChange}
         localeText={chineseLocaleText}
         initialState={{
           pagination: {

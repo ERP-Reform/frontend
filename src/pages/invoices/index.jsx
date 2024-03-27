@@ -10,11 +10,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 // ==============================|| SAMPLE PAGE ||============================== //
 import { useQueryClient } from '@tanstack/react-query';
 import { columns as config } from 'components/tables/config';
-import { useGetInvoices } from 'services/invoiceServices';
+import { useBatchDeleteInvoices, useGetInvoices } from 'services/invoiceServices';
 
 const Page = () => {
   const [data, setData] = useState([]);
   const [query, setQuery] = useState('');
+  const [selectedIds, setSelectedIds] = useState([]);
 
   const initialInvoice = useMemo(
     () =>
@@ -29,6 +30,10 @@ const Page = () => {
   const getInvoices = useGetInvoices(true);
   // const createInvoice = useCreateInvoice(invoice);
   const queryClient = useQueryClient();
+
+  const handleOnRowSelectionChange = useCallback((ids) => {
+    setSelectedIds(ids);
+  }, []);
 
   const parseData = useCallback((data) => {
     return data?.map((item) => {
@@ -59,19 +64,25 @@ const Page = () => {
     }
   };
 
-  const handleDeleteInvoice = useCallback(
-    (SerialNo) => {
-      axios.delete(`http://localhost:8000/invoice/delete/${SerialNo}`).then(() => {
-        const data_ = data.filter((invoice) => invoice?.SerialNo !== SerialNo);
-        setData(data_);
-        queryClient.invalidateQueries({
-          queryKey: ['invoices']
-        });
-      });
-      resetInvoice();
-    },
-    [data, queryClient, resetInvoice]
-  );
+  // const handleDeleteInvoice = useCallback(
+  //   (SerialNo) => {
+  //     axios.delete(`http://localhost:8000/invoice/delete/${SerialNo}`).then(() => {
+  //       const data_ = data.filter((invoice) => invoice?.SerialNo !== SerialNo);
+  //       setData(data_);
+  //       queryClient.invalidateQueries({
+  //         queryKey: ['invoices']
+  //       });
+  //     });
+  //     resetInvoice();
+  //   },
+  //   [data, queryClient, resetInvoice]
+  // );
+
+  const batchDeleteInvoices = useBatchDeleteInvoices(selectedIds);
+
+  const handleBatchDelete = useCallback(() => {
+    batchDeleteInvoices.mutate();
+  }, [batchDeleteInvoices]);
 
   const handleAddInvoice = useCallback(() => {
     // enable after the backend api support
@@ -90,11 +101,11 @@ const Page = () => {
         invoice={invoice}
         setInvoice={setInvoice}
         handleInvoiceSearch={handleInvoiceSearch}
-        handleDeleteInvoice={handleDeleteInvoice}
+        handleDeleteInvoice={handleBatchDelete}
         handleAddInvoice={handleAddInvoice}
         setQuery={setQuery}
       />
-      <DataTable data={data} columnConfigs={config} />
+      <DataTable data={data} columnConfigs={config} handleOnRowSelectionChange={handleOnRowSelectionChange} />
     </MainCard>
   );
 };
