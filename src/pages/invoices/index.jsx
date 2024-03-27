@@ -8,9 +8,9 @@ import DataTable from 'components/tables/DataTable';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 // ==============================|| SAMPLE PAGE ||============================== //
+import { useQueryClient } from '@tanstack/react-query';
 import { columns as config } from 'components/tables/config';
 import { useGetInvoices } from 'services/invoiceServices';
-import { useQueryClient } from '@tanstack/react-query';
 
 const Page = () => {
   const [data, setData] = useState([]);
@@ -94,7 +94,7 @@ const Page = () => {
         handleAddInvoice={handleAddInvoice}
         setQuery={setQuery}
       />
-      <DataTable data={data} />
+      <DataTable data={data} columnConfigs={config} />
     </MainCard>
   );
 };
