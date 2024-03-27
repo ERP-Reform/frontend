@@ -1,14 +1,15 @@
 /* eslint-disable react/prop-types */
 import Box from '@mui/material/Box';
 
+import ERPSelect from 'components/select/ERPSelect';
+import CustomButton from 'components/smallcomp/CustomButton';
 import { useCallback, useEffect } from 'react';
 import FormTextField from './FormTextField';
-import CustomButton from 'components/smallcomp/CustomButton';
-import React from 'react';
 
 const InvoiceForm = (props) => {
   // eslint-disable-next-line react/prop-types
-  const { handleInvoiceSearch, setQuery, invoice, setInvoice, handleDeleteInvoice, handleAddInvoice } = props;
+  const { handleInvoiceSearch, setQuery, invoice, setInvoice, handleDeleteInvoice, handleAddInvoice, vendorOptions, handleOnOptionChange } =
+    props;
 
   const handleChange = useCallback(
     (event) => {
@@ -35,10 +36,12 @@ const InvoiceForm = (props) => {
         noValidate
         autoComplete="off"
       >
-        <div>
+        <div className="flex">
           <FormTextField required={true} label="货号" name="SerialNo" value={invoice?.SerialNo} onChange={handleChange} />
           <FormTextField required={true} label="品名" name="Category" value={invoice?.Category} onChange={handleChange} />
-          <FormTextField required={true} label="供应商" name="Vendor" value={invoice?.Vendor} onChange={handleChange} />
+          <div className="z-50 w-60">
+            <ERPSelect options={vendorOptions} handleOnChange={handleOnOptionChange} />
+          </div>
           <FormTextField required={true} label="采购" name="Buyer" value={invoice?.Buyer} onChange={handleChange} />
           <FormTextField label="车牌" name="CarLicense" value={invoice?.CarLicense} onChange={handleChange} />
         </div>

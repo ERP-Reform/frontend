@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
-import { useEffect } from 'react';
 
 const chineseLocaleText = {
   // Localize column menu labels
@@ -17,16 +16,12 @@ export default function DataTable(props) {
   // eslint-disable-next-line react/prop-types
   const { data, columnConfigs, handleOnRowSelectionChange } = props;
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   return (
     <Box sx={{ height: 800, width: '100%' }}>
       <DataGrid
         rows={data}
         columns={columnConfigs}
-        handleOnRowSelectionChange={handleOnRowSelectionChange}
+        onRowSelectionModelChange={(ids) => handleOnRowSelectionChange(ids)}
         localeText={chineseLocaleText}
         initialState={{
           pagination: {

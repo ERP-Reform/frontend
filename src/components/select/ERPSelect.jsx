@@ -1,13 +1,11 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
 import Select from 'react-select';
 
-function ERPSelect({ props }) {
-  const { options, isMulti, handleOnChange, defaultValue } = props;
+export default function ERPSelect({ ...props }) {
+  const { options, handleOnChange } = props;
   return (
     <Select
-      defaultValue={defaultValue}
-      isMulti={isMulti}
+      isMulti={false}
       name="erpSelect"
       options={options}
       className="react-select"
@@ -16,5 +14,3 @@ function ERPSelect({ props }) {
     />
   );
 }
-
-export default React.memo(ERPSelect);

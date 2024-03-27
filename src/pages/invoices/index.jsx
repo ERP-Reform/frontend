@@ -33,6 +33,7 @@ const Page = () => {
 
   const handleOnRowSelectionChange = useCallback((ids) => {
     setSelectedIds(ids);
+    console.log(ids);
   }, []);
 
   const parseData = useCallback((data) => {
@@ -81,7 +82,8 @@ const Page = () => {
   const batchDeleteInvoices = useBatchDeleteInvoices(selectedIds);
 
   const handleBatchDelete = useCallback(() => {
-    batchDeleteInvoices.mutate();
+    // batchDeleteInvoices.mutate();
+    console.log('ids to be deleted', selectedIds);
   }, [batchDeleteInvoices]);
 
   const handleAddInvoice = useCallback(() => {
@@ -95,6 +97,24 @@ const Page = () => {
     });
   }, [invoice, queryClient, resetInvoice]);
 
+  // fetch all vendors
+  const vendorOptions = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+  ];
+
+  const [selectedVendor, setSelectedVendor] = useState(null);
+
+  const handleOnOptionChange = useCallback(
+    (choice) => {
+      console.log('react-select-choices:', choice);
+      console.log(selectedVendor);
+      setSelectedVendor(choice);
+    },
+    [selectedVendor]
+  );
+
   return (
     <MainCard title="货单">
       <InvoiceForm
@@ -104,6 +124,8 @@ const Page = () => {
         handleDeleteInvoice={handleBatchDelete}
         handleAddInvoice={handleAddInvoice}
         setQuery={setQuery}
+        vendorOptions={vendorOptions}
+        handleOnOptionChange={handleOnOptionChange}
       />
       <DataTable data={data} columnConfigs={config} handleOnRowSelectionChange={handleOnRowSelectionChange} />
     </MainCard>
