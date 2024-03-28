@@ -34,8 +34,7 @@ const Page = () => {
     return data?.map((item) => {
       return {
         ...item?.fields,
-        id: item.pk,
-        SerialNo: item.pk
+        id: item.pk
       };
     });
   }, []);
@@ -59,16 +58,28 @@ const Page = () => {
     }
   };
 
-  const handleDeleteInvoice = useCallback(
-    (SerialNo) => {
-      console.log(`delete by SerialNo: ${SerialNo}`);
-      const data_ = data.filter((invoice) => invoice?.SerialNo !== SerialNo);
-
-      setData(data_);
+  const handleDeleteInvoice = async () => {
+    const response = await fetch('http://localhost:8000/invoice/delete', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        // Include other headers as needed, such as authorization tokens
+      },
+      body: JSON.stringify({ ids: selectedRows }),
+    });
+  
+    const data = await response.json();
+    if (response.ok && data.success) {
+      // Handle successful deletion
+      // e.g., by refreshing the list of invoices or removing the deleted rows from state
+      alert("Selected invoices have been deleted.");
+      // Assuming you have a function to fetch the updated list
       resetInvoice();
-    },
-    [data, resetInvoice]
-  );
+    } else {
+      // Handle error
+      alert("There was an error deleting the selected invoices.");
+    }
+  };
 
   const handleAddInvoice = useCallback(() => {
     // enable after the backend api support
@@ -87,8 +98,8 @@ const Page = () => {
         invoice={invoice}
         setInvoice={setInvoice}
         handleInvoiceSearch={handleInvoiceSearch}
-        handleDeleteInvoice={handleDeleteInvoice}
         handleAddInvoice={handleAddInvoice}
+        handleDeleteInvoice={handleDeleteInvoice}
         setQuery={setQuery}
       />
       <DataTable data={data} />

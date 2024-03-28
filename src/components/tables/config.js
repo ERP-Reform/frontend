@@ -1,5 +1,5 @@
 export const columns = [
-  { field: 'SerialNo', headerName: '货号', width: 90 },
+  { field: 'SerialNo', headerName: '货号', width: 150 },
   {
     field: 'Category',
     headerName: '品名',
