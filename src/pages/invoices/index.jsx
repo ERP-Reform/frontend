@@ -4,17 +4,18 @@
 import axios from 'axios';
 import MainCard from 'components/MainCard';
 import InvoiceForm from 'components/forms/InvoiceForm';
-import DataTable from 'components/tables/DataTable';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 import { columns as config } from 'components/tables/config';
 import { useGetInvoices } from 'services/invoiceServices';
 import { useQueryClient } from '@tanstack/react-query';
+import DataT from 'components/tables/DataTable';
 
 const Page = () => {
   const [data, setData] = useState([]);
   const [query, setQuery] = useState('');
+  const [selectedRows, setSelectedRows] = useState([]);
 
   const initialInvoice = useMemo(
     () =>
@@ -48,6 +49,11 @@ const Page = () => {
     setInvoice(initialInvoice);
   }, [initialInvoice]);
 
+  const handleSelectionChange = (selectedIDs) => {
+    setSelectedRows(selectedIDs);
+  };
+  
+
   const handleInvoiceSearch = async () => {
     try {
       // Replace `your_backend_endpoint` with your actual search endpoint
@@ -59,26 +65,23 @@ const Page = () => {
   };
 
   const handleDeleteInvoice = async () => {
+
     const response = await fetch('http://localhost:8000/invoice/delete', {
       method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        // Include other headers as needed, such as authorization tokens
-      },
-      body: JSON.stringify({ ids: selectedRows }),
-    });
-  
-    const data = await response.json();
-    if (response.ok && data.success) {
+      body: JSON.stringify({ ids: selectedRows })})
+
+
+    if(response.ok) {
       // Handle successful deletion
       // e.g., by refreshing the list of invoices or removing the deleted rows from state
       alert("Selected invoices have been deleted.");
       // Assuming you have a function to fetch the updated list
       resetInvoice();
-    } else {
+    } else{
       // Handle error
       alert("There was an error deleting the selected invoices.");
     }
+
   };
 
   const handleAddInvoice = useCallback(() => {
@@ -102,7 +105,8 @@ const Page = () => {
         handleDeleteInvoice={handleDeleteInvoice}
         setQuery={setQuery}
       />
-      <DataTable data={data} />
+      <DataT data={data}
+        onSelectionChange={handleSelectionChange} />
     </MainCard>
   );
 };

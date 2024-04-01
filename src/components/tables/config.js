@@ -19,6 +19,12 @@ export const columns = [
     editable: true
   },
   {
+    field: 'CreationDate',
+    headerName: '创建时间',
+    width: 110,
+    editable: true
+  },
+  {
     field: 'Qty',
     headerName: '数量',
     sortable: false,

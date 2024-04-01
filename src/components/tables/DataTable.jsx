@@ -15,14 +15,15 @@ const chineseLocaleText = {
 
 export default function DataT(props) {
   // eslint-disable-next-line react/prop-types
-  const { data } = props;
+  const { data, onSelectionChange } = props;
+  const getRowId = (row) => row.id;
 
   return (
     <Box sx={{ height: 800, width: '100%' }}>
       <DataGrid
         rows={data}
+        getRowId={getRowId}
         columns={columns}
-        getRowId={(row) => row.SerialNo}
         localeText={chineseLocaleText}
         initialState={{
           pagination: {
@@ -32,8 +33,9 @@ export default function DataT(props) {
           }
         }}
         pageSizeOptions={[10]}
-        checkboxSelection
-        disableRowSelectionOnClick
+        checkboxSelection={true}
+        disableRowSelectionOnClick={true}
+        onRowSelectionModelChange={(ids) => onSelectionChange(ids)}
         sx={{
           border: 0,
           borderColor: 'primary.light',
