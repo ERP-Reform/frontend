@@ -9,7 +9,14 @@ const CustomButton = ({ text, onClick, backgroundColor, hoverColor }) => {
   };
 
   return (
-    <button className={`custom-button`} style={buttonStyle} onClick={onClick}>
+    <button
+      className={`custom-button`}
+      style={buttonStyle}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick();
+      }}
+    >
       {text}
     </button>
   );

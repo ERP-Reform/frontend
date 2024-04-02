@@ -12,16 +12,16 @@ const chineseLocaleText = {
   columnMenuManageColumns: '列选项'
 };
 
-export default function DataT(props) {
+export default function DattaT(props) {
   // eslint-disable-next-line react/prop-types
-  const { data, columnConfigs, onSelectionChange } = props;
+  const { isLoading, data, columnConfigs, onSelectionChange } = props;
 
   return (
     <Box sx={{ height: 800, width: '100%' }}>
       <DataGrid
+        loading={isLoading}
         rows={data}
         columns={columnConfigs}
-        getRowId={getRowId}
         localeText={chineseLocaleText}
         initialState={{
           pagination: {

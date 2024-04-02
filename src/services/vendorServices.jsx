@@ -1,12 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
-
-const BASE_URL = `http://localhost:8000/vendors`;
 
 export const useGetVendors = (enabled) => {
   const { data, isSuccess, isError, isLoading } = useQuery({
     queryKey: ['vendors'],
-    queryFn: async () => await axios.get(`${BASE_URL}/list`),
+    queryFn: () => axiosInstance.get(`/vendors/list`),
     enabled: enabled
   });
 
@@ -17,7 +14,7 @@ export const useCreateVendor = (vendor) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => axios.post(`${BASE_URL}/insert/`, vendor),
+    mutationFn: () => axiosInstance.post(`/vendors/insert/`, vendor),
     onSuccess: (createdVendor) => {
       // eslint-disable-next-line no-unsafe-optional-chaining
       const { data } = createdVendor?.data;
@@ -36,7 +33,7 @@ export const useUpdateVendor = (vendor) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => axios.put(`${BASE_URL}/update/`, vendor),
+    mutationFn: () => axiosInstance.put(`/vendors/update/`, vendor),
     onSuccess: (createdVendor) => {
       // eslint-disable-next-line no-unsafe-optional-chaining
       const { data } = createdVendor?.data;
@@ -55,7 +52,7 @@ export const useBatchDeleteVendors = (vendorIds) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => axios.put(`${BASE_URL}/update/`, vendorIds),
+    mutationFn: () => axiosInstance.put(`/vendors/update/`, vendorIds),
     onSuccess: () => {
       // eslint-disable-next-line no-unsafe-optional-chaining
       queryClient.invalidateQueries({
