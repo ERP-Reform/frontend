@@ -7,10 +7,10 @@ import InvoiceForm from 'components/forms/InvoiceForm';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 // ==============================|| SAMPLE PAGE ||============================== //
-import { columns as config } from 'components/tables/config';
-import { useGetInvoices } from 'services/invoiceServices';
 import { useQueryClient } from '@tanstack/react-query';
 import DataT from 'components/tables/DataTable';
+import { columns as config } from 'components/tables/config';
+import { useGetInvoices } from 'services/invoiceServices';
 
 const Page = () => {
   const [data, setData] = useState([]);
@@ -52,7 +52,6 @@ const Page = () => {
   const handleSelectionChange = (selectedIDs) => {
     setSelectedRows(selectedIDs);
   };
-  
 
   const handleInvoiceSearch = async () => {
     try {
@@ -65,23 +64,21 @@ const Page = () => {
   };
 
   const handleDeleteInvoice = async () => {
-
     const response = await fetch('http://localhost:8000/invoice/delete', {
       method: 'DELETE',
-      body: JSON.stringify({ ids: selectedRows })})
+      body: JSON.stringify({ ids: selectedRows })
+    });
 
-
-    if(response.ok) {
+    if (response.ok) {
       // Handle successful deletion
       // e.g., by refreshing the list of invoices or removing the deleted rows from state
-      alert("Selected invoices have been deleted.");
+      alert('Selected invoices have been deleted.');
       // Assuming you have a function to fetch the updated list
       resetInvoice();
-    } else{
+    } else {
       // Handle error
-      alert("There was an error deleting the selected invoices.");
+      alert('There was an error deleting the selected invoices.');
     }
-
   };
 
   const handleAddInvoice = useCallback(() => {
@@ -105,8 +102,7 @@ const Page = () => {
         handleDeleteInvoice={handleDeleteInvoice}
         setQuery={setQuery}
       />
-      <DataT data={data}
-        onSelectionChange={handleSelectionChange} />
+      <DataT data={data} onSelectionChange={handleSelectionChange} />
     </MainCard>
   );
 };
