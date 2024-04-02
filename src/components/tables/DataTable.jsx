@@ -12,16 +12,16 @@ const chineseLocaleText = {
   columnMenuManageColumns: '列选项'
 };
 
-export default function DataTable(props) {
+export default function DataT(props) {
   // eslint-disable-next-line react/prop-types
-  const { data, columnConfigs, handleOnRowSelectionChange } = props;
+  const { data, columnConfigs, onSelectionChange } = props;
 
   return (
     <Box sx={{ height: 800, width: '100%' }}>
       <DataGrid
         rows={data}
         columns={columnConfigs}
-        onRowSelectionModelChange={(ids) => handleOnRowSelectionChange(ids)}
+        getRowId={getRowId}
         localeText={chineseLocaleText}
         initialState={{
           pagination: {
@@ -31,8 +31,9 @@ export default function DataTable(props) {
           }
         }}
         pageSizeOptions={[10]}
-        checkboxSelection
-        disableRowSelectionOnClick
+        checkboxSelection={true}
+        disableRowSelectionOnClick={true}
+        onRowSelectionModelChange={(ids) => onSelectionChange(ids)}
         sx={{
           border: 0,
           borderColor: 'primary.light',

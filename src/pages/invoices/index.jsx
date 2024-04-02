@@ -4,13 +4,13 @@
 import axios from 'axios';
 import MainCard from 'components/MainCard';
 import InvoiceForm from 'components/forms/InvoiceForm';
-import DataTable from 'components/tables/DataTable';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 import { useQueryClient } from '@tanstack/react-query';
+import DataT from 'components/tables/DataTable';
 import { columns as config } from 'components/tables/config';
-import { useBatchDeleteInvoices, useGetInvoices } from 'services/invoiceServices';
+import { useGetInvoices } from 'services/invoiceServices';
 
 const Page = () => {
   const [data, setData] = useState([]);
@@ -31,17 +31,11 @@ const Page = () => {
   // const createInvoice = useCreateInvoice(invoice);
   const queryClient = useQueryClient();
 
-  const handleOnRowSelectionChange = useCallback((ids) => {
-    setSelectedIds(ids);
-    console.log(ids);
-  }, []);
-
   const parseData = useCallback((data) => {
     return data?.map((item) => {
       return {
         ...item?.fields,
-        id: item.pk,
-        SerialNo: item.pk
+        id: item.pk
       };
     });
   }, []);
@@ -54,6 +48,10 @@ const Page = () => {
   const resetInvoice = useCallback(() => {
     setInvoice(initialInvoice);
   }, [initialInvoice]);
+
+  const handleSelectionChange = (selectedIDs) => {
+    setSelectedIds(selectedIDs);
+  };
 
   const handleInvoiceSearch = async () => {
     try {
@@ -82,9 +80,27 @@ const Page = () => {
   const batchDeleteInvoices = useBatchDeleteInvoices(selectedIds);
 
   const handleBatchDelete = useCallback(() => {
-    // batchDeleteInvoices.mutate();
+    batchDeleteInvoices.mutate();
     console.log('ids to be deleted', selectedIds);
-  }, [batchDeleteInvoices]);
+  }, [batchDeleteInvoices, selectedIds]);
+
+  // const handleDeleteInvoice = async () => {
+  //   const response = await fetch('http://localhost:8000/invoice/delete', {
+  //     method: 'DELETE',
+  //     body: JSON.stringify({ ids: selectedRows })
+  //   });
+
+  //   if (response.ok) {
+  //     // Handle successful deletion
+  //     // e.g., by refreshing the list of invoices or removing the deleted rows from state
+  //     alert('Selected invoices have been deleted.');
+  //     // Assuming you have a function to fetch the updated list
+  //     resetInvoice();
+  //   } else {
+  //     // Handle error
+  //     alert('There was an error deleting the selected invoices.');
+  //   }
+  // };
 
   const handleAddInvoice = useCallback(() => {
     // enable after the backend api support
@@ -127,7 +143,7 @@ const Page = () => {
         vendorOptions={vendorOptions}
         handleOnOptionChange={handleOnOptionChange}
       />
-      <DataTable data={data} columnConfigs={config} handleOnRowSelectionChange={handleOnRowSelectionChange} />
+      <DataT data={data} columnConfigs={config} onSelectionChange={handleSelectionChange} />
     </MainCard>
   );
 };
