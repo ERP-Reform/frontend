@@ -4,17 +4,18 @@
 import axios from 'axios';
 import MainCard from 'components/MainCard';
 import InvoiceForm from 'components/forms/InvoiceForm';
-import DataTable from 'components/tables/DataTable';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 // ==============================|| SAMPLE PAGE ||============================== //
+import { useQueryClient } from '@tanstack/react-query';
+import DataT from 'components/tables/DataTable';
 import { columns as config } from 'components/tables/config';
 import { useGetInvoices } from 'services/invoiceServices';
-import { useQueryClient } from '@tanstack/react-query';
 
 const Page = () => {
   const [data, setData] = useState([]);
   const [query, setQuery] = useState('');
+  const [selectedRows, setSelectedRows] = useState([]);
 
   const initialInvoice = useMemo(
     () =>
@@ -34,8 +35,7 @@ const Page = () => {
     return data?.map((item) => {
       return {
         ...item?.fields,
-        id: item.pk,
-        SerialNo: item.pk
+        id: item.pk
       };
     });
   }, []);
@@ -49,6 +49,10 @@ const Page = () => {
     setInvoice(initialInvoice);
   }, [initialInvoice]);
 
+  const handleSelectionChange = (selectedIDs) => {
+    setSelectedRows(selectedIDs);
+  };
+
   const handleInvoiceSearch = async () => {
     try {
       // Replace `your_backend_endpoint` with your actual search endpoint
@@ -59,19 +63,23 @@ const Page = () => {
     }
   };
 
-  const handleDeleteInvoice = useCallback(
-    (SerialNo) => {
-      axios.delete(`http://localhost:8000/invoice/delete/${SerialNo}`).then(() => {
-        const data_ = data.filter((invoice) => invoice?.SerialNo !== SerialNo);
-        setData(data_);
-        queryClient.invalidateQueries({
-          queryKey: ['invoices']
-        });
-      });
+  const handleDeleteInvoice = async () => {
+    const response = await fetch('http://localhost:8000/invoice/delete', {
+      method: 'DELETE',
+      body: JSON.stringify({ ids: selectedRows })
+    });
+
+    if (response.ok) {
+      // Handle successful deletion
+      // e.g., by refreshing the list of invoices or removing the deleted rows from state
+      alert('Selected invoices have been deleted.');
+      // Assuming you have a function to fetch the updated list
       resetInvoice();
-    },
-    [data, queryClient, resetInvoice]
-  );
+    } else {
+      // Handle error
+      alert('There was an error deleting the selected invoices.');
+    }
+  };
 
   const handleAddInvoice = useCallback(() => {
     // enable after the backend api support
@@ -90,11 +98,11 @@ const Page = () => {
         invoice={invoice}
         setInvoice={setInvoice}
         handleInvoiceSearch={handleInvoiceSearch}
-        handleDeleteInvoice={handleDeleteInvoice}
         handleAddInvoice={handleAddInvoice}
+        handleDeleteInvoice={handleDeleteInvoice}
         setQuery={setQuery}
       />
-      <DataTable data={data} />
+      <DataT data={data} onSelectionChange={handleSelectionChange} />
     </MainCard>
   );
 };

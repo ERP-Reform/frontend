@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
-import { useEffect } from 'react';
 import { columns } from './config';
 
 const chineseLocaleText = {
@@ -16,16 +15,14 @@ const chineseLocaleText = {
 
 export default function DataT(props) {
   // eslint-disable-next-line react/prop-types
-  const { data } = props;
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  const { data, onSelectionChange } = props;
+  const getRowId = (row) => row.id;
 
   return (
     <Box sx={{ height: 800, width: '100%' }}>
       <DataGrid
         rows={data}
+        getRowId={getRowId}
         columns={columns}
         localeText={chineseLocaleText}
         initialState={{
@@ -36,8 +33,9 @@ export default function DataT(props) {
           }
         }}
         pageSizeOptions={[10]}
-        checkboxSelection
-        disableRowSelectionOnClick
+        checkboxSelection={true}
+        disableRowSelectionOnClick={true}
+        onRowSelectionModelChange={(ids) => onSelectionChange(ids)}
         sx={{
           border: 0,
           borderColor: 'primary.light',

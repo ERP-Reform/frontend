@@ -1,5 +1,5 @@
 export const columns = [
-  { field: 'SerialNo', headerName: '货号', width: 90 },
+  { field: 'SerialNo', headerName: '货号', width: 150 },
   {
     field: 'Category',
     headerName: '品名',
@@ -15,6 +15,12 @@ export const columns = [
   {
     field: 'Reference',
     headerName: '可溯源编号',
+    width: 110,
+    editable: true
+  },
+  {
+    field: 'CreationDate',
+    headerName: '创建时间',
     width: 110,
     editable: true
   },
