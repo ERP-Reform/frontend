@@ -15,13 +15,10 @@ export const useCreateVendor = (vendor) => {
 
   return useMutation({
     mutationFn: () => axiosInstance.post(`/vendors/insert/`, vendor),
-    onSuccess: (createdVendor) => {
-      // eslint-disable-next-line no-unsafe-optional-chaining
-      const { data } = createdVendor?.data;
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['vendors']
       });
-      queryClient.setQueryData([`vendor`, { id: data.id }], data);
     },
     onError: (err) => {
       console.error(err);
@@ -34,13 +31,10 @@ export const useUpdateVendor = (vendor) => {
 
   return useMutation({
     mutationFn: () => axiosInstance.put(`/vendors/update/`, vendor),
-    onSuccess: (createdVendor) => {
-      // eslint-disable-next-line no-unsafe-optional-chaining
-      const { data } = createdVendor?.data;
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['vendors']
       });
-      queryClient.setQueryData([`vendor`, { id: data.id }], data);
     },
     onError: (err) => {
       console.error(err);
@@ -52,9 +46,13 @@ export const useBatchDeleteVendors = (vendorIds) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => axiosInstance.put(`/vendors/update/`, vendorIds),
+    mutationFn: () =>
+      axiosInstance({
+        method: 'delete',
+        url: `/vendor/delete`,
+        data: { ids: vendorIds }
+      }),
     onSuccess: () => {
-      // eslint-disable-next-line no-unsafe-optional-chaining
       queryClient.invalidateQueries({
         queryKey: ['vendors']
       });

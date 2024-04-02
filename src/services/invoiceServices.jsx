@@ -16,13 +16,10 @@ const useCreateInvoice = (invoice, handleOnSuccess) => {
 
   return useMutation({
     mutationFn: () => axiosInstance.post(`/invoice/insert/`, invoice),
-    onSuccess: (createdInvoice) => {
-      // eslint-disable-next-line no-unsafe-optional-chaining
-      const { data } = createdInvoice?.data;
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['invoices']
       });
-      queryClient.setQueryData([`invoice`, { id: data.id }], data);
       handleOnSuccess();
     },
     onError: (err) => {
