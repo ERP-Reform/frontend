@@ -10,8 +10,8 @@ const icons = {
 // ==============================|| MENU ITEMS - EXTRA PAGES ||============================== //
 
 const pages = {
-  id: 'humanResource',
-  title: '人力资源',
+  id: 'department',
+  title: '部门',
   type: 'group',
   children: [
     {
@@ -19,6 +19,13 @@ const pages = {
       title: '雇员',
       type: 'item',
       url: '/employees',
+      icon: icons.LoginOutlined
+    },
+    {
+      id: 'vendor',
+      title: '供应商',
+      type: 'item',
+      url: '/vendors',
       icon: icons.LoginOutlined
     }
   ]
