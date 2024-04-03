@@ -17,6 +17,7 @@ const Shadow = Loadable(lazy(() => import('pages/components-overview/Shadow')));
 const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons')));
 
 const Invoices = Loadable(lazy(() => import('pages/invoices')));
+const Vendors = Loadable(lazy(() => import('pages/vendors')));
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -67,6 +68,10 @@ const MainRoutes = {
     {
       path: 'employees',
       element: <DashboardDefault />
+    },
+    {
+      path: 'vendors',
+      element: <Vendors />
     }
   ]
 };

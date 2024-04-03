@@ -1,15 +1,16 @@
 /* eslint-disable react/prop-types */
 import Box from '@mui/material/Box';
 
+import ERPSelect from 'components/select/ERPSelect';
+import CustomButton from 'components/smallcomp/CustomButton';
 import { useCallback, useEffect } from 'react';
 import FormTextField from './FormTextField';
-import CustomButton from 'components/smallcomp/CustomButton';
-import React from 'react';
 
 
 const InvoiceForm = (props) => {
   // eslint-disable-next-line react/prop-types
-  const { handleInvoiceSearch, setQuery, invoice, setInvoice, handleDeleteInvoice, handleAddInvoice } = props;
+  const { handleInvoiceSearch, setQuery, invoice, setInvoice, handleDeleteInvoice, handleAddInvoice, vendorOptions, handleOnOptionChange } =
+    props;
 
   const handleChange = useCallback(
     (event) => {
@@ -36,13 +37,15 @@ const InvoiceForm = (props) => {
         noValidate
         autoComplete="off"
       >
-        <div>
-          <FormTextField required={true} label="货号" name="SerialNo" value={invoice?.SerialNo} onChange={handleChange}/>
+        <div className="flex">
+          <FormTextField required={true} label="货号" name="SerialNo" value={invoice?.SerialNo} onChange={handleChange} />
           <FormTextField required={true} label="品名" name="Category" value={invoice?.Category} onChange={handleChange} />
-          <FormTextField required={true} label="供应商" name="Vendor" value={invoice?.Vendor} onChange={handleChange} />
+          <div className="z-50 w-60">
+            <ERPSelect options={vendorOptions} handleOnChange={handleOnOptionChange} />
+          </div>
           <FormTextField required={true} label="可溯源编号" name="Reference" value={invoice?.Reference} onChange={handleChange} />
-          <span style={{ color: '#999', fontSize: '0.8rem', display: 'block', marginBottom: '1rem' , marginLeft: '3rem'}}>
-              格式: YYYYMMDD + 序号
+          <span style={{ color: '#999', fontSize: '0.8rem', display: 'block', marginBottom: '1rem', marginLeft: '3rem' }}>
+            格式: YYYYMMDD + 序号
           </span>
         </div>
 

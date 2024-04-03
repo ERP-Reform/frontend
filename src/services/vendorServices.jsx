@@ -1,41 +1,24 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from 'config/axiosConfig';
 
-const useGetInvoices = (enabled) => {
+export const useGetVendors = (enabled) => {
   const { data, isSuccess, isError, isLoading } = useQuery({
-    queryKey: ['invoices'],
-    queryFn: () => axiosInstance.get(`/invoice/list`),
+    queryKey: ['vendors'],
+    queryFn: () => axiosInstance.get(`/vendors/list`),
     enabled: enabled
   });
 
   return { data, isSuccess, isError, isLoading };
 };
 
-const useCreateInvoice = (invoice, handleOnSuccess) => {
+export const useCreateVendor = (vendor) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => axiosInstance.post(`/invoice/insert/`, invoice),
+    mutationFn: () => axiosInstance.post(`/vendor/insert/`, vendor),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['invoices']
-      });
-      handleOnSuccess();
-    },
-    onError: (err) => {
-      console.error(err);
-    }
-  });
-};
-
-const useDeleteInvoice = (id) => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: () => axiosInstance.delete(`/invoice/${id}`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['invoices']
+        queryKey: ['vendors']
       });
     },
     onError: (err) => {
@@ -44,27 +27,39 @@ const useDeleteInvoice = (id) => {
   });
 };
 
-const useBatchDeleteInvoices = (ids, handleOnDeleteSuccess) => {
+export const useUpdateVendor = (vendor) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => axiosInstance.put(`/vendor/update/`, vendor),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['vendors']
+      });
+    },
+    onError: (err) => {
+      console.error(err);
+    }
+  });
+};
+
+export const useBatchDeleteVendors = (vendorIds) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: () =>
       axiosInstance({
         method: 'delete',
-        url: `/invoice/delete`,
-        data: { ids }
+        url: `/vendor/delete`,
+        data: { ids: vendorIds }
       }),
-    onSuccess: (response) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['invoices']
+        queryKey: ['vendors']
       });
-      handleOnDeleteSuccess(response);
     },
     onError: (err) => {
       console.error(err);
     }
   });
 };
-
-export { useBatchDeleteInvoices, useCreateInvoice, useDeleteInvoice, useGetInvoices };
-// eslint-disable-next-line prettier/prettier

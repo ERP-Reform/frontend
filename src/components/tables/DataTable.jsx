@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
-import { columns } from './config';
 
 const chineseLocaleText = {
   // Localize column menu labels
@@ -13,17 +12,16 @@ const chineseLocaleText = {
   columnMenuManageColumns: '列选项'
 };
 
-export default function DataT(props) {
+export default function DattaT(props) {
   // eslint-disable-next-line react/prop-types
-  const { data, onSelectionChange } = props;
-  const getRowId = (row) => row.id;
+  const { isLoading, data, columnConfigs, onSelectionChange } = props;
 
   return (
     <Box sx={{ height: 800, width: '100%' }}>
       <DataGrid
+        loading={isLoading}
         rows={data}
-        getRowId={getRowId}
-        columns={columns}
+        columns={columnConfigs}
         localeText={chineseLocaleText}
         initialState={{
           pagination: {
