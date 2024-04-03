@@ -20,6 +20,7 @@ const Page = () => {
   const [vendors, setVendors] = useState(emptyVendor);
   const [selectedIds, setSelectedIds] = useState([]);
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getVendors = useGetVendors(true);
   const createVendor = useCreateVendor(vendors);
@@ -48,6 +49,10 @@ const Page = () => {
     }
   }, [getVendors?.data?.data, getVendors.isLoading, getVendors.isSuccess, parseData]);
 
+  useEffect(() => {
+    setIsLoading(getVendors.isLoading);
+  }, [getVendors.isLoading]);
+
   const handleOnRowSelectionChange = useCallback((ids) => {
     setSelectedIds(ids);
   }, []);
@@ -58,7 +63,7 @@ const Page = () => {
       <div>
         <CustomButton text="删除" onClick={handleBatchDelete} backgroundColor="#dc3540" hoverColor="#c82333" />
       </div>
-      <DataT data={data} columnConfigs={config} handleOnRowSelectionChange={handleOnRowSelectionChange} />
+      <DataT isLoading={isLoading} data={data} columnConfigs={config} onSelectionChange={handleOnRowSelectionChange} />
     </MainCard>
   );
 };

@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { axiosInstance } from 'config/axiosConfig';
 
 export const useGetVendors = (enabled) => {
   const { data, isSuccess, isError, isLoading } = useQuery({
@@ -14,7 +15,7 @@ export const useCreateVendor = (vendor) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => axiosInstance.post(`/vendors/insert/`, vendor),
+    mutationFn: () => axiosInstance.post(`/vendor/insert/`, vendor),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['vendors']
@@ -30,7 +31,7 @@ export const useUpdateVendor = (vendor) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => axiosInstance.put(`/vendors/update/`, vendor),
+    mutationFn: () => axiosInstance.put(`/vendor/update/`, vendor),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['vendors']
