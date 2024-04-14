@@ -1,5 +1,5 @@
 // material-ui
-import { useMediaQuery, Container, Link, Typography, Stack } from '@mui/material';
+import { Container, Link, Stack, Typography, useMediaQuery } from '@mui/material';
 
 // ==============================|| FOOTER - AUTHENTICATION ||============================== //
 
