@@ -6,7 +6,6 @@ import CustomButton from 'components/smallcomp/CustomButton';
 import { useCallback, useEffect } from 'react';
 import FormTextField from './FormTextField';
 
-
 const InvoiceForm = (props) => {
   // eslint-disable-next-line react/prop-types
   const { handleInvoiceSearch, setQuery, invoice, setInvoice, handleDeleteInvoice, handleAddInvoice, vendorOptions, handleOnOptionChange } =
