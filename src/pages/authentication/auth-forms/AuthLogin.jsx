@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 // material-ui
@@ -9,16 +9,20 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 // project import
-import AnimateButton from 'components/@extended/AnimateButton';
 
 // assets
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
+import AnimateButton from 'components/@extended/AnimateButton';
+import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import { useLogin } from 'services/accountServices';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = () => {
-  const [showPassword, setShowPassword] = React.useState(false);
+  const navigate = useNavigate();
+  const [cookies, setCookie] = useCookies(['user']);
+  const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -42,17 +46,25 @@ const AuthLogin = () => {
     [setAccount]
   );
 
-  const navigate = useNavigate();
   const handleOnSuccess = useCallback(
-    (e) => {
-      e.preventDefault();
+    (account, priority) => {
       console.log(account);
+      setCookie('account', account);
+      setCookie('priority', priority);
       navigate('/dashboard');
     },
-    [account, navigate]
+    [navigate, setCookie]
   );
 
-  // const login = useLogin(account);
+  const login = useLogin(account, handleOnSuccess);
+
+  const handleSubmit = useCallback(() => {
+    login.mutate();
+  }, [login]);
+
+  useEffect(() => {
+    console.log(cookies);
+  }, [cookies]);
 
   return (
     <>
@@ -128,7 +140,7 @@ const AuthLogin = () => {
                   type="button"
                   variant="contained"
                   color="primary"
-                  onClick={handleOnSuccess}
+                  onClick={handleSubmit}
                 >
                   登录
                 </Button>
