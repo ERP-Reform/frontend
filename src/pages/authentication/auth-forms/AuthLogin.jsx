@@ -48,10 +48,17 @@ const AuthLogin = () => {
 
   const handleOnSuccess = useCallback(
     (account, priority) => {
-      console.log(account);
-      setCookie('account', account);
-      setCookie('priority', priority);
-      navigate('/dashboard');
+      if (account && priority) {
+        setCookie('account', account, { maxAge: 3600 * 8 });
+        setCookie('priority', priority, { maxAge: 3600 * 8 });
+        navigate('/dashboard/default');
+      } else {
+        alert('账号密码错误');
+        setAccount({
+          username: '',
+          password: ''
+        });
+      }
     },
     [navigate, setCookie]
   );
@@ -63,8 +70,10 @@ const AuthLogin = () => {
   }, [login]);
 
   useEffect(() => {
-    console.log(cookies);
-  }, [cookies]);
+    if (cookies['account'] && cookies['priority']) {
+      navigate('/dashboard/default');
+    }
+  }, [cookies, navigate]);
 
   return (
     <>

@@ -10,9 +10,12 @@ export const useLogin = (user, handleOnSuccess) => {
         pwd: user.password
       }),
     onSuccess: (res) => {
-      const { account, priority } = res?.data;
-      //   handleOnSuccess(account, priority);
-      console.log({ res, account, priority, handleOnSuccess });
+      if (res?.data.length === 0) {
+        handleOnSuccess('', '');
+      } else {
+        const { user, priority } = res?.data?.[0]?.['fields'];
+        handleOnSuccess(user, priority);
+      }
     },
     onError: (err) => {
       console.error(err);
