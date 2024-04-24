@@ -7,6 +7,7 @@ import ThemeCustomization from 'themes';
 // ==============================|| APP - THEME, ROUTER, LOCAL  ||============================== //
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import ProtectedComponent from 'components/auth/index';
 import { queryClient } from 'config/queryClient';
 const theme = createTheme(
   {
@@ -22,7 +23,9 @@ const App = () => (
     <ThemeCustomization>
       <ThemeProvider theme={theme}>
         <ScrollTop>
-          <Routes />
+          <ProtectedComponent>
+            <Routes />
+          </ProtectedComponent>
         </ScrollTop>
       </ThemeProvider>
     </ThemeCustomization>
